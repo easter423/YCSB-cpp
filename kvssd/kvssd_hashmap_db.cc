@@ -7,12 +7,14 @@ namespace kvssd_hashmap {
 Hashmap_KVSSD::Hashmap_KVSSD() { pthread_rwlock_init(&rwl, NULL); }
 Hashmap_KVSSD::~Hashmap_KVSSD() {
     for (auto &entry : db) {
+        auto it = db.find(entry.first);
         if (entry.first.key != nullptr) {
-            free(const_cast<void *>(entry.first.key));
+            free(entry.first.key);
         }
         if (entry.second.value != nullptr) {
             free(entry.second.value);
         }
+        db.erase(it);
     }
     db.clear();
     pthread_rwlock_destroy(&rwl);
@@ -111,9 +113,6 @@ kvssd::kvs_result Hashmap_KVSSD::Update(const kvssd::kvs_key &key, const kvssd::
         return kvssd::kvs_result::KVS_ERR_KS_NOT_EXIST;
     }
     kvssd::kvs_value value_copy = DeepCopyValue(value);
-    if (it->second.value != nullptr) {
-        free(it->second.value);
-    }
     it->second = value_copy;
     pthread_rwlock_unlock(&rwl);
     return kvssd::kvs_result::KVS_SUCCESS;

@@ -16,7 +16,7 @@ BIND_LEVELDB ?= 0
 BIND_ROCKSDB ?= 0
 BIND_LMDB ?= 0
 BIND_SQLITE ?= 0
-BIND_KVSSD ?= 0
+BIND_KVSSD ?= 1
 
 # Extra options
 DEBUG_BUILD ?=
@@ -93,7 +93,7 @@ $(EXEC): $(OBJECTS)
 	@echo "  LD      " $@
 
 .cc.o:
-	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
+	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -g -o $@ $<
 	@echo "  CC      " $@
 
 %.d: %.cc
