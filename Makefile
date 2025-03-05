@@ -19,7 +19,7 @@ BIND_SQLITE ?= 0
 BIND_KVSSD ?= 1
 
 # Extra options
-DEBUG_BUILD ?=
+DEBUG_BUILD ?= 1
 EXTRA_CXXFLAGS ?=
 EXTRA_LDFLAGS ?=
 
@@ -93,7 +93,7 @@ $(EXEC): $(OBJECTS)
 	@echo "  LD      " $@
 
 .cc.o:
-	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -g -o $@ $<
+	@$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c -o $@ $<
 	@echo "  CC      " $@
 
 %.d: %.cc
